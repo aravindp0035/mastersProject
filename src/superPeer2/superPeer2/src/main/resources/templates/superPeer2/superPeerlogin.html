@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Peer 2 Login</title>
+    <link rel="stylesheet" th:href="@{/css/superPeerCSS.css}" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="header">
+        <h1>Super Peer 2 Login</h1>
+        <div class="header-buttons">
+        	<button type="button" onclick="window.location.href = '/';">Home</button>
+            <button type="button" onclick="window.location.href = '#';">Register/Signup</button>
+            <button type="button" onclick="window.location.href = '#';">Guest Login</button>
+            <button type="button" onclick="window.location.href = '#';">Help/Support</button>
+        </div>
+    </div>
+    <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="/images/signin-image.jpg" alt="sing up image"></figure>
+                        <a href="#" class="signup-image-link">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Super Peer 2 Login</h2>
+                        <form method="POST" class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_name" id="username" placeholder="Username"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="password" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Mock backend request
+            setTimeout(() => {
+                if (username === "superPeer2" && password === "password") {
+                    // Simulate successful login
+                    localStorage.setItem('sessionToken', 'fake-jwt-token');
+                    history.pushState(null, null, 'superPeer2/dashboard'); // Push state to history
+                    window.location.href = "/superPeer2/dashboard"; // Redirect to dashboard.html
+                } else {
+                    document.getElementById("responseMessage").innerText = "Invalid username or password.";
+                }
+            }, 1000); // Simulate network delay
+        });
+
+        // Prevent user from navigating back to login
+        window.addEventListener('popstate', function(event) {
+            if (window.location.pathname === 'superPeer2/dashboard') {
+                history.pushState(null, null, 'superPeer2/dashboard'); // Push state again
+            }
+        });
+    </script>
+</body>
+</html>
+

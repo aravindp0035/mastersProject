@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Peer 1 Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-toggle-nav">
+            <button type="button" onclick="toggleNav()">&#9776;</button>
+        </div>
+        <h1>Super Peer 1 Dashboard</h1>
+        <div class="header-logout">
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <nav id="sideNav">
+        <a href="/superPeer1/dashboard">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <a href="/metaBlock">MetaBlock</a>
+        <a href="/transactions">Transactions</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <h2>Welcome back, Super Peer 1!</h2>
+            <div class="container1">
+        <h3>Model Names and Their Versions</h3>
+        <div class="model-list">
+            <div class="model-category">
+                <h3>Apartments</h3>
+                <ul>
+                    <li>V2017</li>
+                    <li>V2021</li>
+                    <li>V2023</li>
+                </ul>
+            </div>
+            <div class="model-category">
+                <h3>Realtor</h3>
+                <ul>
+                    <li>V2018</li>
+                    <li>V2022</li>
+                </ul>
+            </div>
+            <div class="model-category">
+                <h3>Redfin</h3>
+                <ul>
+                    <li>V2014</li>
+                    <li>V2015</li>
+                    <li>V2017</li>
+                </ul>
+            </div>           
+            <div class="model-category">
+                <h3>Zillow</h3>
+                <ul>
+                    <li>V2020</li>
+                    <li>V2023</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+            <div class="header-buttons">
+                <button id="requestButton1" type="button" onclick="toggleRequestContainer(1)">Add new Block</button>
+                <button id="requestButton3" type="button" onclick="toggleRequestContainer(2)">Extract Classifier file</button>
+                <button id="requestButton4" type="button" onclick="toggleRequestContainer(3)">Extract Reviews</button>
+                
+                <button id="requestButton5" type="button" onclick="toggleRequestContainer(4)">Search Block</button>
+                <button id="sync-reviews-btn" type="button" onclick="">Sync Reviews</button>
+            </div>
+            
+            <!-- Success Containers -->
+            <div th:if="${success}">
+                <div class="success-container" id="successContainer1" style="display:none;">
+                    <h2>Block Created Successfully!!</h2>
+                    <p>Model Name: <span th:text="${modelname}"></span></p>
+                    <p>Model Version: <span th:text="${modelver}"></span></p>
+                    <p>Model File: <span th:text="${mlfileName}"></span></p>
+                  
+                    <button type="button" onclick="redirectToDashboard()">Okay</button>
+                </div>
+            </div>
+            
+            <div class="success-container" id="successContainer2" style="display:none;">
+                <h2>Classifier Extracted Successfully!!</h2>
+                <p>Model Name: <span id="modelname2"></span></p>
+                <p>Model Version: <span id="modelver2"></span></p>
+                <button type="button" onclick="redirectToDashboard()">Okay</button>
+            </div>
+            
+            <div class="success-container" id="successContainer3" style="display:none;">
+                <h2>Reviews File Extracted Successfully!!</h2>
+                <p>Model Name: <span id="modelname3"></span></p>
+                <p>Model Version: <span id="modelver3"></span></p>
+                <button type="button" onclick="redirectToDashboard()">Okay</button>
+            </div>
+            <div class="success-container" id="successContainer4" style="display:none;">
+                <h2>Reviews Sync Successful!!</h2>
+                <h3>New Reviews Added to Blockchain successfully..</h3>
+                <button type="button" onclick="redirectToDashboard()">Okay</button>
+            </div>
+
+            
+            <!-- Forms -->
+            <form action="/createBlock" method="post" enctype="multipart/form-data" id="createBlock">
+                <div class="request-container" id="requestContainer1" style="display:none;">
+                    <h3>Create new Block</h3>
+                    <div>
+                        <label for="dropdown">Model Name <span class="required">*</span></label>
+                        <select id="dropdown" name="dropdown" required>
+                            <option value="">Choose a Model</option>
+                            <option value="Apartments">Apartments.com</option>
+                            <option value="Realtor">Realtor.com</option>
+                            <option value="Redfin">Redfin</option>                   
+                            <option value="Zillow">Zillow</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="modelver">Model Version <span class="required">*</span></label>
+                        <input type="text" id="modelver" name="modelver" required>
+                    </div>
+                    <div>
+                        <label for="mlfileUpload">Upload Classifier File: <span class="required">*</span></label>
+                        <input type="file" id="mlfileUpload" name="mlfileUpload" required>
+                    </div>
+                    
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+
+        
+
+            <form action="/extractMLfile" method="post" id="extractMLfile">
+                <div class="request-container" id="requestContainer2" style="display:none;">
+                    <h3>Extract Classifier</h3>
+                    <div>
+                        <select id="dropdown2" name="dropdown2" onchange="populateDropdown('dropdown2', 'dropdown3')">
+                            <option value="">Choose a Model</option>
+                            <option value="Apartments">Apartments.com</option>
+                            <option value="Realtor">Realtor.com</option>
+                            <option value="Redfin">Redfin</option>
+                            
+                            <option value="Zillow">Zillow</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="dropdown3" name="dropdown3">
+                            <option value="">Choose a Version</option>
+                        </select>
+                    </div>
+                    <button type="submit">Download Classifier</button>
+                </div>
+            </form>
+
+            <form action="/extractReviews" method="post" id="extractReviews">
+                <div class="request-container" id="requestContainer3" style="display:none;">
+                    <h3>Extract Reviews</h3>
+                    <div>
+                        <select id="dropdown4" name="dropdown4" onchange="populateDropdown('dropdown4', 'dropdown5')">
+                            <option value="">Choose a Model</option>
+                            <option value="Apartments">Apartments.com</option>
+                            <option value="Realtor">Realtor.com</option>
+                            <option value="Redfin">Redfin</option>
+                            
+                            <option value="Zillow">Zillow</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="dropdown5" name="dropdown5">
+                            <option value="">Choose a Version</option>
+                        </select>
+                    </div>
+                    <button type="submit">Download Review file</button>
+                </div>
+            </form>
+            
+          
+            
+
+            <form action="/Search" method="post" id="searchClassifier">
+                <div class="request-container" id="requestContainer4" style="display:none;">
+                    <h3>Search Classifier</h3>
+                    <div>
+                        <select id="dropdown8" name="dropdown8" onchange="populateDropdown('dropdown8', 'dropdown9')">
+                            <option value="">Choose a Model</option>
+                            <option value="Apartments">Apartments.com</option>
+                            <option value="Realtor">Realtor.com</option>
+                            <option value="Redfin">Redfin</option>
+                            
+                            <option value="Zillow">Zillow</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="dropdown9" name="dropdown9">
+                            <option value="">Choose a Version</option>
+                        </select>
+                    </div>
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+
+            <div id="key-metrics">
+                <div class="metric">
+                    <h2>Total number of blocks</h2>
+                    <p id="totalBlocks" ><span th:text="${size}"></span></p>
+                </div>
+                <div class="metric">
+                    <h2>Number of Transactions</h2>
+                    <p id="trans" ><span th:text="${tsize}"></span></p>
+                </div>
+            </div>
+
+            <div id="recent-activity">
+                <h2>Recent Activity</h2>
+                <ul>
+                <li>Received approval for new block</li>
+                    <li>Broadcasted to all the peers</li>
+                    <li>Recent login is at Thursday, 7pm</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Dashboard © 2024</p>
+    </footer>
+    <script>
+        window.onload = function() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (!sessionToken) {
+                window.location.href = "/"; 
+            }
+        };
+
+        function showSuccessContainer(containerId) {
+            document.getElementById(containerId).style.display = 'block';
+        }
+
+        function updateSuccessContainer(containerId, modelName, modelVersion) {
+            document.getElementById(`modelname${containerId}`).textContent = modelName;
+            document.getElementById(`modelver${containerId}`).textContent = modelVersion;
+        }
+        
+        document.getElementById('createBlock').addEventListener('submit', function(event) {
+        	
+        	
+        	alert("Block Created Successfully!!"+"\n Now Synchronizing with all Peers..");
+        	
+            setTimeout(function() {
+               
+            	document.getElementById('createBlock').submit();
+                
+            }, 2000); 
+            
+         
+        });
+        
+      
+
+        document.getElementById('extractMLfile').addEventListener('submit', function(event) {
+        	updateSuccessContainer(2, document.getElementById('dropdown2').value, document.getElementById('dropdown3').value);
+            setTimeout(function() {
+                showSuccessContainer('successContainer2');
+            }, 1000); 
+        });
+
+        document.getElementById('extractReviews').addEventListener('submit', function(event) {
+        	updateSuccessContainer(3, document.getElementById('dropdown4').value, document.getElementById('dropdown5').value);
+            setTimeout(function() {
+                showSuccessContainer('successContainer3');
+            }, 1000); 
+        });
+        
+        
+
+        document.getElementById('searchClassifier').addEventListener('submit', function(event) {
+            setTimeout(function() {
+            }, 1000); 
+        });
+
+        function redirectToDashboard() {
+            window.location.href = "/superPeer1/dashboard"; // Redirect to dashboard
+        }
+
+        function toggleRequestContainer(containerId) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`requestContainer${i}`).style.display = "none";
+            }
+            document.getElementById(`requestContainer${containerId}`).style.display = "block";
+        }
+
+        function logout() {
+            localStorage.removeItem('sessionToken');
+            window.location.href = "/";
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("sideNav");
+            var mainContent = document.getElementById("mainContent");
+            if (sideNav.style.width === "250px") {
+                sideNav.style.width = "0";
+                mainContent.style.marginLeft = "0";
+            } else {
+                sideNav.style.width = "250px";
+                mainContent.style.marginLeft = "250px";
+            }
+        }
+
+        function populateDropdown(dropdownId, targetDropdownId) {
+            var dropdown = document.getElementById(dropdownId);
+            var targetDropdown = document.getElementById(targetDropdownId);
+            var selectedValue = dropdown.value;
+
+            console.log("populateDropdown called with:", dropdownId, targetDropdownId, selectedValue);
+
+            var versions = {
+                Apartments: ["V2017", "V2021", "V2023"],
+                Realtor: ["V2018", "V2022"],
+                Redfin: ["V2014", "V2015", "V2017"],               
+                Zillow: ["V2020", "V2023"]
+            };
+
+            targetDropdown.innerHTML = "";
+            var option = document.createElement("option");
+            option.value = "";
+            option.text = "Choose a Version";
+            targetDropdown.appendChild(option);
+
+            if (selectedValue && versions[selectedValue]) {
+                versions[selectedValue].forEach(function(version) {
+                    var option = document.createElement("option");
+                    option.value = version;
+                    option.text = version;
+                    targetDropdown.appendChild(option);
+                });
+            }
+
+            console.log("targetDropdown after population:", targetDropdown.innerHTML);
+
+        }
+        
+        function syncReviews() {
+            fetch('/SyncReviews', {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    showSuccessContainer('successContainer4');
+                } else {
+                    console.error('Sync failed');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+       
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('sync-reviews-btn').addEventListener('click', function(event) {
+                syncReviews();
+            });
+        });
+        
+        
+        
+        
+    </script>
+</body>
+</html>

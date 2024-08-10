@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f2f2f2;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav {
+            background-color: #444;
+            color: #fff;
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: block;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+        nav a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .container p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .container button:hover {
+            background-color: #45a049;
+        }
+        .code-container {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-toggle-nav">
+            <button type="button" onclick="toggleNav()">&#9776;</button>
+        </div>
+        <h1>Search Results</h1>
+        <div class="header-logout">
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <nav id="sideNav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/settings">Settings</a>
+        <a href="/messages">Messages</a>
+        <a href="/notifications">Notifications</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <h2>Classifier Found Successfully!</h2>
+            <p>Model Name: <span th:text="${modelname}"></span></p>
+            <p>Model Version: <span th:text="${modelver}"></span></p>
+            <h3>Machine Learning Model File:</h3>
+            <div class="code-container" id="file-content">
+                <span th:text="${mlfile}"></span>
+            </div>
+            <h3>Reviews and Comments:</h3>
+            <div class="code-container" id="file-content">
+                <span th:text="${reviewsfile}"></span>
+            </div>
+            <button type="button" onclick="redirectToDashboard()">Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            var sideNav = document.getElementById("sideNav");
+            sideNav.style.width = sideNav.style.width === "200px" ? "0" : "200px";
+        }
+
+        function logout() {
+            console.log("Logging out...");
+            window.location.href = "/";
+        }
+
+        function redirectToDashboard() {
+            window.location.href = "/superPeer2/dashboard";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Peer Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-toggle-nav">
+            <button type="button" onclick="toggleNav()">&#9776;</button>
+        </div>
+        <h1>Super Peer Dashboard</h1>
+        <div class="header-logout">
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <nav id="sideNav">
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <a href="/metaBlock">MetaBlock</a>
+        <a href="/transactions">Transactions</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="main-content" id="mainContent">
+        <div class="container">
+        <h2>Transactions</h2>
+        <table>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Requester</th>
+                <th>Provider</th>
+                <th>DES</th>
+                <th>Model ID</th>
+            </tr>
+            <tr th:each="transaction : ${transactions}">
+                <td th:text="${transaction.transactionID}"></td>
+                <td th:text="${transaction.requester}"></td>
+                <td th:text="${transaction.provider}"></td>
+                <td th:text="${transaction.DES}"></td>
+                <td th:text="${transaction.modelID}"></td>
+            </tr>
+        </table>
+        <button class="return-button" onclick="redirectToDashboard()">Return to Dashboard</button>
+    </div>
+    </div>
+    <footer>
+        <p>Dashboard © 2024</p>
+    </footer>
+    <script>
+        window.onload = function() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (!sessionToken) {
+                window.location.href = "/"; 
+            }
+        };
+
+       
+        function redirectToDashboard() {
+            window.location.href = "/superPeer1/dashboard"; 
+        }
+
+       
+
+        function logout() {
+            localStorage.removeItem('sessionToken');
+            window.location.href = "/";
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("sideNav");
+            var mainContent = document.getElementById("mainContent");
+            if (sideNav.style.width === "250px") {
+                sideNav.style.width = "0";
+                mainContent.style.marginLeft = "0";
+            } else {
+                sideNav.style.width = "250px";
+                mainContent.style.marginLeft = "250px";
+            }
+        }
+
+        
+    </script>
+</body>
+</html>
+

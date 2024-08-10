@@ -1,0 +1,16 @@
+[
+  {
+    "blockId": 0,
+    "previousBlockHash": "0",
+    "modelId": "AparV2017",
+    "hashCurrentBlock": "0f746e97f3029aba167a27dfe6a0bf57d272ddb015db4477823198763aa289d4",
+    "timestamp": "2024-07-28T21:26:13.000198900Z"
+  },
+  {
+    "blockId": 1,
+    "previousBlockHash": "87da656d29fc7e1036ff0aa16c6ef037ae5f17e6213a268672e6460c99fc3768",
+    "modelId": "AparV2021",
+    "hashCurrentBlock": "0ec2d1b7a7623a490a7ad0bbfe55cd73560f2fdc364f60e95d02b8757d3c16fb",
+    "timestamp": "2024-07-28T21:29:09.903991700Z"
+  }
+]
